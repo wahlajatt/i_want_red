@@ -47,9 +47,16 @@ public class movement : MonoBehaviour
 		xRotation -= mouseX;
 		yRotation -= Mathf.Clamp(yRotation, -90f,90f);
 		if (activ)
-				transform.localRotation = Quaternion.Euler(0f, -xRotation, 0f);}
-		if(ScoreUpdate.currentHealth ==0)
-			SceneManager.LoadScene("MainMenu");
+				transform.localRotation = Quaternion.Euler(0f, -xRotation, 0f);
+		if(ScoreUpdate.currentHealth ==0 && activ)
+			{
+				controller.enabled = false;
+				animator.SetTrigger("dead");
+				activ = false; 
+				StartCoroutine(wait());
+			}
+		}
+		
     
 	}
 	void OnControllerColliderHit(ControllerColliderHit hit)
@@ -77,11 +84,12 @@ public class movement : MonoBehaviour
 			Destroy(hit.gameObject);
 		}
 
-		IEnumerator wait()
-		{
-			yield return new WaitForSeconds(3);
-			SceneManager.LoadScene("MainMenu");
-		}
 
+
+	}
+	IEnumerator wait()
+	{
+		yield return new WaitForSeconds(3);
+		SceneManager.LoadScene("MainMenu");
 	}
 }
